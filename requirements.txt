@@ -1,6 +1,6 @@
-decorator==4.4.0
-joblib==0.13.2
-lmdb==0.97
-natsort==6.0.0
-networkx==2.3
-tqdm==4.35.0
+decorator
+joblib
+lmdb
+natsort
+networkx
+tqdm
