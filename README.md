@@ -83,7 +83,7 @@ from The Most Disreputable Trade. Two large collections of poetry at the end of 
 Data loc for preparation:
 /media/vvaara/uh-villevaara-ext1/chunks_for_blast/
 
-python data_preparer.py  --data_location="/media/vvaara/uh-villevaara-ext1/chunks_for_blast/" --output_folder="/media/vvaara/uh-villevaara-ext1/blast_work/" --language="ENG" --threads=1
+python data_preparer.py  --data_location="../chunks_for_blast/" --output_folder="/media/vvaara/uh-villevaara-ext1/blast_work/" --language="ENG" --threads=1
 
 output_folder: This is the location of the folder that data_preparer produced. In others words, that one above, so input for this. ^^
 batch_folder: Final output location. 
@@ -91,5 +91,7 @@ batch_folder: Final output location.
 python blast_batches.py  --output_folder="../../output/blast_rushworth" --batch_folder="../../output/blast_rushworth/data_out" --threads=1 --text_count=9 --qpi=10 --iter=0 --e_value=0.000000001
 
 
+## on puhti
 
+python data_preparer.py  --data_location="../../../chunks_for_blast/" --output_folder="../../../blast_work/" --language="ENG" --threads=1
 
