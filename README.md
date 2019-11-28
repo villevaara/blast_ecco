@@ -93,5 +93,5 @@ python blast_batches.py  --output_folder="../../output/blast_rushworth" --batch_
 
 ## on puhti
 
-python data_preparer.py  --data_location="../../../chunks_for_blast/" --output_folder="../../../blast_work/" --language="ENG" --threads=1
+python data_preparer.py --data_location="../../../chunks_for_blast/" --output_folder="../../../blast_work/" --language="ENG" --threads=1
 

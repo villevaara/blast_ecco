@@ -64,14 +64,11 @@ class DataPreparer:
 		else:
 			files = [self.data_location.split("/")[1]]
 			folder = self.data_location.split("/")[0]
-
 		return files, folder
 
-
-
 	def open_databases(self):
-		text_env = lmdb.open(self.output_folder + "/db/original_data_DB", map_size=1000000000000)
-		info_env = lmdb.open(self.output_folder + "/db/info_DB", map_size=1000000000000)
+		text_env = lmdb.open(self.output_folder + "/db/original_data_DB", map_size=100000000000)  # 50000000000
+		info_env = lmdb.open(self.output_folder + "/db/info_DB", map_size=10000000000)  # 5000000000
 		return text_env, info_env
 
 	## Generate the protein database for BLAST
