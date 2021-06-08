@@ -67,6 +67,12 @@ Program Codes, Methods.
 
 Python script wrapper around NCBI BLAST Basic Local Alignment Search Tool) bioinformatics software, utilizing multiple threads. Custom version of BLAST has been adopted to detecting natural language text-reuse data in historical literature corpus. Low intensity text reuse detection does not require cluster computing, but the nature of the sources (full text corpus of circe 300,000 text with relatively bad OCR quality) warrants use of a method that is able to detect text reuse in very noisy material, and is computationally demanding. For more detailed information on the method see: Vesanto (2019): Detecting and Analyzing Text Reuse with BLAST (https://www.utupub.fi/handle/10024/146706) and the code repository at: https://github.com/avjves/ .
 
+
+## Test 1 -- Hume vol 5
+
+python data_preparer.py  --data_location="../../data/raw/hume_vol5" --output_folder="../../output/blast_hume5" --language="ENG" --threads=1
+python blast_batches.py  --output_folder="../../output/blast_hume5" --batch_folder="../../output/blast_hume5/data_out" --threads=3 --text_count=3 --qpi=10 --iter=0 --e_value=0.000000001
+
 ## Test 2 -- all the english poets
 
 from The Most Disreputable Trade. Two large collections of poetry at the end of 18th century. Compare volumes covering same poets, as well as the original works of those poets.

@@ -134,8 +134,32 @@ def run_taito_timelimit(args):
     # TODO after running everything, combine them into one iter
 
 
-''' Check whether there's enough time to keep running the batch '''
+def run_kale_timelimit(args):
+    print("Using preset: Taito-timelimit")
+    start_time_in_minutes, min_time_in_minutes = args.preset_info.split(";")
+    start_time = time.time()
 
+    for i_i, i in enumerate(range(args.iter*args.qpi, (args.iter+1)*args.qpi)):
+        if (os.path.exists(args.batch_folder +
+                           "/batches/iter_{}.tar.gz".format(i)) or
+                os.path.exists(args.output_folder +
+                               "/batches/iter_{}.tar.gz".format(i))):
+            print("Iter {} already done, skipping...".format(i))
+            continue
+        if not enough_time(
+                start_time, min_time_in_minutes, start_time_in_minutes):
+            print("Not enough time remaining, stopping...")
+            break
+        print("Iter {}".format(i))
+        new_args = args
+        # new_args.local_folder = (os.environ.get("TMPDIR") + "/" +
+        #                          args.output_folder.split("/")[-1])
+        new_args.iter = i
+        new_args.qpi = 1
+        run_normal(new_args)
+
+
+''' Check whether there's enough time to keep running the batch '''
 
 def enough_time(start_time, min_time_in_minutes, start_time_in_minutes):
     curr_time = time.time()
@@ -171,5 +195,7 @@ if __name__ == "__main__":
         run_taito(args)
     elif args.preset == "taito-timelimit":
         run_taito_timelimit(args)
+    elif args.preset == "kale-timelimit":
+        run_kale_timelimit(args)
     else:
         run_normal(args)
