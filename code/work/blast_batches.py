@@ -135,7 +135,7 @@ def run_taito_timelimit(args):
 
 
 def run_kale_timelimit(args):
-    print("Using preset: Taito-timelimit")
+    print("Using preset: Kale-timelimit")
     start_time_in_minutes, min_time_in_minutes = args.preset_info.split(";")
     start_time = time.time()
 
@@ -152,8 +152,7 @@ def run_kale_timelimit(args):
             break
         print("Iter {}".format(i))
         new_args = args
-        # new_args.local_folder = (os.environ.get("TMPDIR") + "/" +
-        #                          args.output_folder.split("/")[-1])
+        new_args.local_folder = None
         new_args.iter = i
         new_args.qpi = 1
         run_normal(new_args)
