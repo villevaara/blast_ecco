@@ -6,10 +6,12 @@ https://www.utupub.fi/bitstream/handle/10024/146706/Vesanto_Aleksi_opinnayte.pdf
 
 see README in code/work/
 
+python blast_batches.py --output_folder="$WRKDIR/txt_reuse/blast_work_from_puhti/blast_work" --batch_folder="$WRKDIR/txt_reuse/results_qpi10" --threads=$1 --text_count=1302141 --qpi=10 --iter=$2 --e_value=0.000000001
+
 ### batches
 
 python data_preparer.py --data_location="../../data/raw" --output_folder="../../output/blast_out" --threads=1 --language="ENG"
-python blast_batches.py --batch_folder="../../output/export" --output_folder="../../output/blast_out" --threads=1 --iter=0 --text_count=5 --qpi=5 --e_value=0.000000001
+python blast_batches.py --batch_folder="/media/vvaara/uh-villevaara-500gb/blast_results/max_target_seqs_500" --output_folder="/media/vvaara/uh-villevaara-500gb/blast_data" --threads=3 --iter=0 --text_count=1302141 --qpi=1 --e_value=0.000000001 --max_target_seqs=500
 
 ### one go
 
@@ -34,4 +36,6 @@ python blast_batches.py --batch_folder="../../output/export_go3_ge13" --output_f
 
 python blast_batches.py --batch_folder="../../output/export" --output_folder="../../output/blast_out_h5" --threads=1 --iter=0 --text_count=5 --qpi=5 --e_value=0.000000001
 python blast_batches.py --batch_folder="../../output/export" --output_folder="../../output/blast_out" --threads=1 --iter=0 --text_count=5 --qpi=5 --e_value=0.000000001
+
+
 

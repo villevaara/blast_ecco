@@ -1,4 +1,4 @@
-# Max resutls?
+# Max results?
 
 Philip raised a possible issue of Blast results being limited to max N hits for each sequence. There seem to be a few options for limiting results in BLAST, some with default values (see blast_opt.txt).
 

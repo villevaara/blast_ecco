@@ -76,7 +76,8 @@ def run_normal(args):
             iter=args.iter,
             queries_per_iter=args.qpi,
             text_count=args.text_count,
-            logger=args.logger)
+            logger=args.logger,
+            max_target_seqs=args.max_target_seqs)
         runner.run()
         copy_local_data_back(args.local_folder, args.batch_folder, args.iter)
         # delete_local_data(args.local_folder)
@@ -89,7 +90,8 @@ def run_normal(args):
             iter=args.iter,
             queries_per_iter=args.qpi,
             text_count=args.text_count,
-            logger=args.logger)
+            logger=args.logger,
+            max_target_seqs=args.max_target_seqs)
         runner.run()
         copy_local_data_back(args.output_folder, args.batch_folder, args.iter)
 
@@ -184,6 +186,7 @@ if __name__ == "__main__":
     parser.add_argument("--log_file", help="Whether to save logging into file as well.", default=None)
     parser.add_argument("--preset", help="Some presets for certain systems.")
     parser.add_argument("--preset_info", help="Extra information for a given preset.")
+    parser.add_argument("--max_target_seqs", help="BLAST max_target_seqs parameter.", type=int, default=5000000)
     args = parser.parse_args()
 
     # logging
