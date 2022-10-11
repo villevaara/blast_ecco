@@ -157,7 +157,7 @@ class MultipleBlastRunner:
                              "-gapextend", "11",
                              "-matrix", "BLOSUM62",
                              "-threshold", "400",
-                             "-max_target_seqs", "5000000", # This is default 500, and can limit results,
+                             "-max_target_seqs", str(self.max_target_seqs), # This is default 500, and can limit results,
                              "-outfmt", "7 stitle qstart qend sstart send length ppos",
                              "-lcase_masking",
                              "-num_threads", str(self.threads)])

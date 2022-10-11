@@ -25,8 +25,6 @@ make ##Compile the program
 ## binary files are now in in ncbi-blast-2.5.0+-src/c++/ReleaseMT/bin
 ```
 
-looks like you might have to run ./configure with --without-boost
-
 The software expects BLAST binaries to be in PATH. This can be done by:
 ```
 export PATH="/path/to/ncbi-blast-2.5.0+-src/c++/ReleaseMT/bin:$PATH"

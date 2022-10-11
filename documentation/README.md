@@ -13,6 +13,8 @@ python blast_batches.py --output_folder="$WRKDIR/txt_reuse/blast_work_from_puhti
 python data_preparer.py --data_location="../../data/raw" --output_folder="../../output/blast_out" --threads=1 --language="ENG"
 python blast_batches.py --batch_folder="/media/vvaara/uh-villevaara-500gb/blast_results/max_target_seqs_500" --output_folder="/media/vvaara/uh-villevaara-500gb/blast_data" --threads=3 --iter=0 --text_count=1302141 --qpi=1 --e_value=0.000000001 --max_target_seqs=500
 
+python blast_batches.py --batch_folder="/media/vvaara/uh-villevaara-500gb/blast_results/max_target_seqs_500" --output_folder="/media/vvaara/uh-villevaara-500gb/blast_data" --threads=3 --iter=0 --text_count=1302141 --qpi=1 --e_value=0.000000001 --max_target_seqs=500
+
 ### one go
 
 python run_full.py --data_folder="../../data/raw" --output_folder="../../output/blast_simple" --language="ENG" --threads=1
@@ -37,5 +39,8 @@ python blast_batches.py --batch_folder="../../output/export_go3_ge13" --output_f
 python blast_batches.py --batch_folder="../../output/export" --output_folder="../../output/blast_out_h5" --threads=1 --iter=0 --text_count=5 --qpi=5 --e_value=0.000000001
 python blast_batches.py --batch_folder="../../output/export" --output_folder="../../output/blast_out" --threads=1 --iter=0 --text_count=5 --qpi=5 --e_value=0.000000001
 
+### testing
 
+#### manual running:
 
+blastp -db "/media/vvaara/uh-villevaara-500gb/blast_data/db/textdb" -query "/media/vvaara/uh-villevaara-500gb/blast_data/info/iter_0/query.fsa" -gilist "/media/vvaara/uh-villevaara-500gb/blast_data/info/iter_0/pos_gi.txt" -out "/media/vvaara/uh-villevaara-500gb/mantest/mantest.tsv" -evalue "0.000000001" -word_size "6" -gapopen "3" -gapextend "11" -matrix "BLOSUM62" -threshold "400" -max_target_seqs "50000" -outfmt "7 stitle qstart qend sstart send length ppos" -lcase_masking -num_threads "1"
