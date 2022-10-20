@@ -186,7 +186,7 @@ if __name__ == "__main__":
     parser.add_argument("--log_file", help="Whether to save logging into file as well.", default=None)
     parser.add_argument("--preset", help="Some presets for certain systems.")
     parser.add_argument("--preset_info", help="Extra information for a given preset.")
-    parser.add_argument("--max_target_seqs", help="BLAST max_target_seqs parameter.", type=int, default=5000000)
+    parser.add_argument("--max_target_seqs", help="BLAST max_target_seqs parameter.", type=int, default=500000000)
     args = parser.parse_args()
 
     # logging
