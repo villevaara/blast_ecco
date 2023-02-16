@@ -158,7 +158,7 @@ class MultipleBlastRunner:
                              "-matrix", "BLOSUM62",
                              "-threshold", "400",
                              "-max_target_seqs", str(self.max_target_seqs), # This is default 500, and can limit results.
-                             "-mt_mode", str(self.mt_mode), # Default 0 (old mode), "1" can increase speed.
+                             "-mt_mode", str(self.mt_mode), # Default 0 (old mode), "1" can increase speed?
                              "-outfmt", "7 stitle qstart qend sstart send length ppos",
                              "-lcase_masking",
                              "-num_threads", str(self.threads)])
