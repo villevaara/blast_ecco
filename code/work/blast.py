@@ -92,7 +92,7 @@ class MultipleBlastRunner:
 
     def __init__(self, output_folder, e_value, word_size, threads,
                  iter, queries_per_iter, text_count, logger,
-                 max_target_seqs):
+                 max_target_seqs, mt_mode):
         self.output_folder=output_folder
         self.e_value=e_value
         self.word_size=word_size
@@ -103,6 +103,7 @@ class MultipleBlastRunner:
         self.logger = logger
         self.db_loc = output_folder + "/db/textdb"
         self.max_target_seqs = max_target_seqs
+        self.mt_mode = mt_mode
 
     def run(self):
         self.logger.info("Running software...")
