@@ -188,7 +188,7 @@ if __name__ == "__main__":
     parser.add_argument("--preset_info", help="Extra information for a given preset.")
     parser.add_argument("--max_target_seqs", help="BLAST max_target_seqs parameter.", type=int, default=500000000)
     parser.add_argument("--mt_mode", help="BLAST mt_mode parameter. 0 (default) or 1.", type=int, default=0)
-        args = parser.parse_args()
+    args = parser.parse_args()
 
     # logging
     logger = get_logger(args.log_file)
