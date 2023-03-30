@@ -6,6 +6,8 @@ Using BLAST for text reuse detection on ECCO, EEBO, etc...
 
 ## Running
 
+Note! With large datasets, such as ECCO, it looks like dividing the texts to smaller chunks is essential to ensure that the CPU runs do not take enormously long. BLAST only makes use of paralle CPUs in the initial part of looking for matching alignments, so just throwing more CPUs at the problem does not seem to significantly speed the process up. The returns diminish significantly after ~8 parallel CPUs/threads. 
+
 ### Simple version:
 
 python run_full.py  --data_folder="../../data/raw/" --output_folder="../../output/blast_hume_vol5" --language="ENG"

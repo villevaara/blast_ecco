@@ -92,7 +92,7 @@ class MultipleBlastRunner:
 
     def __init__(self, output_folder, e_value, word_size, threads,
                  iter, queries_per_iter, text_count, logger,
-                 max_target_seqs, mt_mode):
+                 max_target_seqs, mt_mode, gpu):
         self.output_folder=output_folder
         self.e_value=e_value
         self.word_size=word_size
@@ -104,6 +104,7 @@ class MultipleBlastRunner:
         self.db_loc = output_folder + "/db/textdb"
         self.max_target_seqs = max_target_seqs
         self.mt_mode = mt_mode
+        self.gpu = gpu
 
     def run(self):
         self.logger.info("Running software...")
@@ -147,22 +148,30 @@ class MultipleBlastRunner:
             self.logger.info("Running query: #{}".format(i))
             self.generate_positive_gi_list(i)
             self.make_query_file(i)
-            subprocess.call(["blastp",
-                             "-db", self.db_loc,
-                             "-query", self.query_loc,
-                             "-gilist", self.gi_loc,
-                             "-out", self.output_folder + "/batches/iter_" + str(self.iter) + "/batch_" + str(i) + ".tsv",
-                             "-evalue", str(self.e_value),
-                             "-word_size", str(self.word_size),
-                             "-gapopen", "3",
-                             "-gapextend", "11",
-                             "-matrix", "BLOSUM62",
-                             "-threshold", "400",
-                             "-max_target_seqs", str(self.max_target_seqs), # This is default 500, and can limit results.
-                             "-mt_mode", str(self.mt_mode), # Default 0 (old mode), "1" can increase speed?
-                             "-outfmt", "7 stitle qstart qend sstart send length ppos",
-                             "-lcase_masking",
-                             "-num_threads", str(self.threads)])
+            # Some parameters (mt_mode, gpu) are not present in different versions of BLAST. These are checked separately, and then 
+            # added to the parameters list for subprocess.call.
+            # mt_mode is only present in BLAST>2.12.
+            # gpu is only present in GPU-BLAST, based on BLAST 2.2.
+            call_parameters = ["blastp",
+                               "-db", self.db_loc,
+                               "-query", self.query_loc,
+                               "-gilist", self.gi_loc,
+                               "-out", self.output_folder + "/batches/iter_" + str(self.iter) + "/batch_" + str(i) + ".tsv",
+                               "-evalue", str(self.e_value),
+                               "-word_size", str(self.word_size),
+                               "-gapopen", "3",
+                               "-gapextend", "11",
+                               "-matrix", "BLOSUM62",
+                               "-threshold", "400",
+                               "-max_target_seqs", str(self.max_target_seqs), # This is default 500, and can limit results.
+                               "-outfmt", "7 stitle qstart qend sstart send length ppos",
+                               "-lcase_masking",
+                               "-num_threads", str(self.threads)]
+            if self.mt_mode is not None:
+                call_parameters.extend(["-mt_mode", str(self.mt_mode)]) # Default 0 (old mode), "1" can increase speed?
+            if self.gpu is not None:
+                call_parameters.extend(["-gpu", str(self.gpu)])
+            subprocess.call(call_parameters)
 
     def compress_results(self):
         self.logger.info("Compressing results...")

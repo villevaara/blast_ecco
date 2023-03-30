@@ -78,7 +78,8 @@ def run_normal(args):
             text_count=args.text_count,
             logger=args.logger,
             max_target_seqs=args.max_target_seqs,
-            mt_mode=args.mt_mode)
+            mt_mode=args.mt_mode,
+            gpu=args.gpu)
         runner.run()
         copy_local_data_back(args.local_folder, args.batch_folder, args.iter)
         # delete_local_data(args.local_folder)
@@ -93,7 +94,8 @@ def run_normal(args):
             text_count=args.text_count,
             logger=args.logger,
             max_target_seqs=args.max_target_seqs,
-            mt_mode=args.mt_mode)
+            mt_mode=args.mt_mode,
+            gpu=args.gpu)
         runner.run()
         copy_local_data_back(args.output_folder, args.batch_folder, args.iter)
 
@@ -189,7 +191,8 @@ if __name__ == "__main__":
     parser.add_argument("--preset", help="Some presets for certain systems.")
     parser.add_argument("--preset_info", help="Extra information for a given preset.")
     parser.add_argument("--max_target_seqs", help="BLAST max_target_seqs parameter.", type=int, default=500000000)
-    parser.add_argument("--mt_mode", help="BLAST mt_mode parameter. 0 (default) or 1.", type=int, default=0)
+    parser.add_argument("--mt_mode", help="BLAST mt_mode parameter. 0 (default) or 1.", type=int) # Empty arguments default to None.
+    parser.add_argument("--gpu", help="Parameter for GPU-BLAST. if T, use GPU.") # Empty arguments default to None.
     args = parser.parse_args()
 
     # logging
