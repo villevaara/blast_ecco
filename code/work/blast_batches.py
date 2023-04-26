@@ -80,9 +80,7 @@ def run_normal(args):
         queries_per_iter=args.qpi,
         text_count=args.text_count,
         logger=args.logger,
-        max_target_seqs=args.max_target_seqs,
-        mt_mode=args.mt_mode,
-        gpu=args.gpu)
+        max_target_seqs=args.max_target_seqs)
     runner.run()
     copy_local_data_back(this_output_folder, args.batch_folder, args.iter)
     # delete_local_data(args.local_folder)
@@ -121,9 +119,7 @@ def run_gpu(args):
         queries_per_iter=args.qpi,
         text_count=args.text_count,
         logger=args.logger,
-        max_target_seqs=args.max_target_seqs,
-        mt_mode=args.mt_mode,
-        gpu=args.gpu)
+        max_target_seqs=args.max_target_seqs)
     runner.run_gpu()
     copy_local_data_back(this_output_folder, args.batch_folder, args.iter)
 

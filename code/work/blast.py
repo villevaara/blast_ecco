@@ -171,7 +171,7 @@ class MultipleBlastRunner:
             subprocess.call(call_parameters)
 
     def run_gpu_blast(self):
-        self.logger.info("Running BLAST...")
+        self.logger.info("Running GPU BLAST...")
         for i in range(1, self.queries_per_iter+1):
             self.logger.info("Running query: #{}".format(i))
             self.generate_positive_gi_list(i)
