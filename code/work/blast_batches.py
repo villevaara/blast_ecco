@@ -68,39 +68,64 @@ def copy_local_data_back(output_folder, batch_folder, iter):
 def run_normal(args):
     if args.local_folder != None:
         copy_output_folder_to_local(args.output_folder, args.local_folder)
-        runner = MultipleBlastRunner(
-            output_folder=args.local_folder,
-            e_value=args.e_value,
-            word_size=args.word_size,
-            threads=args.threads,
-            iter=args.iter,
-            queries_per_iter=args.qpi,
-            text_count=args.text_count,
-            logger=args.logger,
-            max_target_seqs=args.max_target_seqs,
-            mt_mode=args.mt_mode,
-            gpu=args.gpu)
-        runner.run()
-        copy_local_data_back(args.local_folder, args.batch_folder, args.iter)
-        # delete_local_data(args.local_folder)
+        this_output_folder = args.local_folder
     else:
-        runner = MultipleBlastRunner(
-            output_folder=args.output_folder,
-            e_value=args.e_value,
-            word_size=args.word_size,
-            threads=args.threads,
-            iter=args.iter,
-            queries_per_iter=args.qpi,
-            text_count=args.text_count,
-            logger=args.logger,
-            max_target_seqs=args.max_target_seqs,
-            mt_mode=args.mt_mode,
-            gpu=args.gpu)
-        runner.run()
-        copy_local_data_back(args.output_folder, args.batch_folder, args.iter)
+        this_output_folder = args.output_folder
+    runner = MultipleBlastRunner(
+        output_folder=this_output_folder,
+        e_value=args.e_value,
+        word_size=args.word_size,
+        threads=args.threads,
+        iter=args.iter,
+        queries_per_iter=args.qpi,
+        text_count=args.text_count,
+        logger=args.logger,
+        max_target_seqs=args.max_target_seqs,
+        mt_mode=args.mt_mode,
+        gpu=args.gpu)
+    runner.run()
+    copy_local_data_back(this_output_folder, args.batch_folder, args.iter)
+    # delete_local_data(args.local_folder)
+    # else:
+    #     runner = MultipleBlastRunner(
+    #         output_folder=args.output_folder,
+    #         e_value=args.e_value,
+    #         word_size=args.word_size,
+    #         threads=args.threads,
+    #         iter=args.iter,
+    #         queries_per_iter=args.qpi,
+    #         text_count=args.text_count,
+    #         logger=args.logger,
+    #         max_target_seqs=args.max_target_seqs,
+    #         mt_mode=args.mt_mode,
+    #         gpu=args.gpu)
+    #     runner.run()
+    #     copy_local_data_back(args.output_folder, args.batch_folder, args.iter)
 
 
 ''' Use Taito preset == set local folder to TMPDIR '''
+
+
+def run_gpu(args):
+    if args.local_folder != None:
+        copy_output_folder_to_local(args.output_folder, args.local_folder)
+        this_output_folder = args.local_folder
+    else:
+        this_output_folder = args.output_folder
+    runner = MultipleBlastRunner(
+        output_folder=this_output_folder,
+        e_value=args.e_value,
+        word_size=args.word_size,
+        threads=args.threads,
+        iter=args.iter,
+        queries_per_iter=args.qpi,
+        text_count=args.text_count,
+        logger=args.logger,
+        max_target_seqs=args.max_target_seqs,
+        mt_mode=args.mt_mode,
+        gpu=args.gpu)
+    runner.run_gpu()
+    copy_local_data_back(this_output_folder, args.batch_folder, args.iter)
 
 
 def run_taito(args):
@@ -191,8 +216,6 @@ if __name__ == "__main__":
     parser.add_argument("--preset", help="Some presets for certain systems.")
     parser.add_argument("--preset_info", help="Extra information for a given preset.")
     parser.add_argument("--max_target_seqs", help="BLAST max_target_seqs parameter.", type=int, default=500000000)
-    parser.add_argument("--mt_mode", help="BLAST mt_mode parameter. 0 (default) or 1.", type=int) # Empty arguments default to None.
-    parser.add_argument("--gpu", help="Parameter for GPU-BLAST. if T, use GPU.") # Empty arguments default to None.
     args = parser.parse_args()
 
     # logging
@@ -205,5 +228,7 @@ if __name__ == "__main__":
         run_taito_timelimit(args)
     elif args.preset == "kale-timelimit":
         run_kale_timelimit(args)
+    elif args.preset == "gpu":
+        run_gpu(args)
     else:
         run_normal(args)

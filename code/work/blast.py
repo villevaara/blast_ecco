@@ -92,7 +92,7 @@ class MultipleBlastRunner:
 
     def __init__(self, output_folder, e_value, word_size, threads,
                  iter, queries_per_iter, text_count, logger,
-                 max_target_seqs, mt_mode, gpu):
+                 max_target_seqs):
         self.output_folder=output_folder
         self.e_value=e_value
         self.word_size=word_size
@@ -103,8 +103,6 @@ class MultipleBlastRunner:
         self.logger = logger
         self.db_loc = output_folder + "/db/textdb"
         self.max_target_seqs = max_target_seqs
-        self.mt_mode = mt_mode
-        self.gpu = gpu
 
     def run(self):
         self.logger.info("Running software...")
@@ -112,6 +110,13 @@ class MultipleBlastRunner:
         self.run_blast()
         self.compress_results()
         self.logger.info("Blasting done...")
+
+    def run_gpu(self):
+        self.logger.info("Running software...")
+        self.make_iteration_folders()
+        self.run_gpu_blast()
+        self.compress_results()
+        self.logger.info("GPU Blasting done...")
 
     def make_iteration_folders(self):
         folders_to_make = ["{}/info/iter_{}", "{}/batches/iter_{}"]
@@ -148,10 +153,6 @@ class MultipleBlastRunner:
             self.logger.info("Running query: #{}".format(i))
             self.generate_positive_gi_list(i)
             self.make_query_file(i)
-            # Some parameters (mt_mode, gpu) are not present in different versions of BLAST. These are checked separately, and then 
-            # added to the parameters list for subprocess.call.
-            # mt_mode is only present in BLAST>2.12.
-            # gpu is only present in GPU-BLAST, based on BLAST 2.2.
             call_parameters = ["blastp",
                                "-db", self.db_loc,
                                "-query", self.query_loc,
@@ -167,10 +168,51 @@ class MultipleBlastRunner:
                                "-outfmt", "7 stitle qstart qend sstart send length ppos",
                                "-lcase_masking",
                                "-num_threads", str(self.threads)]
-            if self.mt_mode is not None:
-                call_parameters.extend(["-mt_mode", str(self.mt_mode)]) # Default 0 (old mode), "1" can increase speed?
-            if self.gpu is not None:
-                call_parameters.extend(["-gpu", str(self.gpu)])
+            subprocess.call(call_parameters)
+
+    def run_gpu_blast(self):
+        self.logger.info("Running BLAST...")
+        for i in range(1, self.queries_per_iter+1):
+            self.logger.info("Running query: #{}".format(i))
+            self.generate_positive_gi_list(i)
+            self.make_query_file(i)
+            # first create the DB for the GPU query and then process the query
+            self.logger.info("Creating DB for GPU Blast.".format(i))
+            call_parameters_prep = ["blastp",
+                                    "-db", self.db_loc,
+                                    "-query", self.query_loc,
+                                    "-gilist", self.gi_loc,
+                                    "-out", self.output_folder + "/batches/iter_" + str(self.iter) + "/batch_" + str(i) + ".tsv",
+                                    "-evalue", str(self.e_value),
+                                    "-word_size", str(self.word_size),
+                                    "-gapopen", "3",
+                                    "-gapextend", "11",
+                                    "-method", "2",
+                                    "-matrix", "BLOSUM62",
+                                    "-threshold", "400",
+                                    "-max_target_seqs", str(self.max_target_seqs), # This is default 500, and can limit results.
+                                    "-outfmt", "7 stitle qstart qend sstart send length ppos",
+                                    "-lcase_masking",
+                                    "-gpu", "T"]
+            subprocess.call(call_parameters_prep)
+            self.logger.info("Running GPU Blast.".format(i))
+            call_parameters = ["blastp",
+                               "-db", self.db_loc,
+                               "-query", self.query_loc,
+                               "-gilist", self.gi_loc,
+                               "-out", self.output_folder + "/batches/iter_" + str(self.iter) + "/batch_" + str(i) + ".tsv",
+                               "-evalue", str(self.e_value),
+                               "-word_size", str(self.word_size),
+                               "-gapopen", "3",
+                               "-gapextend", "11",
+                               "-matrix", "BLOSUM62",
+                               "-threshold", "400",
+                               "-max_target_seqs", str(self.max_target_seqs), # This is default 500, and can limit results.
+                               "-outfmt", "7 stitle qstart qend sstart send length ppos",
+                               "-lcase_masking",
+                               "-gpu", "T",
+                               "-num_threads", str(self.threads) # num_threads is incompatible with gpu-blast -method switch but might work here?
+                               ]
             subprocess.call(call_parameters)
 
     def compress_results(self):
